@@ -194,5 +194,9 @@ export default {
   showIndexSymbol: {
     type: String,
     default: '#',
-  }
+  },
+  itemsExpanded: {
+    type: Array as PropType<Item[]> | null,
+    default: null,
+  },
 };

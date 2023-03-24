@@ -27,10 +27,11 @@
       multi-sort
       @update-sort="updateSort"
       @select-all="selectAll"
+      v-model:items-expanded="itemsExpanded"
     >
       <template #expand="item">
         <div style="padding: 15px">
-          {{ item.name }} won championships
+          {{ item.player }} won championships
         </div>
       </template>
       <template #address="{ address }">
@@ -86,6 +87,7 @@
     </div> -->
   </div>
   <div>{{serverOptions}}</div>
+  <div>{{itemsExpanded}}</div>
 </template>
 
 
@@ -125,6 +127,7 @@ export default defineComponent({
     ];
     const items = ref<Item[]>([]);
     const itemsSelected = ref<Item[]>([items.value[0]]);
+    const itemsExpanded = ref<Item[]>([]);
     const serverItemsLength = ref(0);
     const serverOptions = ref<ServerOptions>({
       page: 1,
@@ -221,6 +224,7 @@ export default defineComponent({
       bodyRowClassName,
       updateSort,
       selectAll,
+      itemsExpanded,
     };
   },
 

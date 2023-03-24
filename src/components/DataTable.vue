@@ -369,6 +369,7 @@ const {
   themeColor,
   rowsOfPageSeparatorMessage,
   showIndexSymbol,
+  itemsExpanded,
 } = toRefs(props);
 
 // style related computed variables
@@ -410,7 +411,8 @@ const emits = defineEmits([
   'update:serverOptions',
   'updatePageItems',
   'updateTotalItems',
-  'selectAll'
+  'selectAll',
+  'update:itemsExpanded',
 ]);
 
 const isMultipleSelectable = computed((): boolean => itemsSelected.value !== null);
@@ -535,6 +537,7 @@ const {
   pageItems,
   prevPageEndIndex,
   emits,
+  itemsExpanded,
 );
 
 const {
