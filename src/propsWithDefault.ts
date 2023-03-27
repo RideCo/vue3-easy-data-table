@@ -3,6 +3,7 @@ import type {
   SortType, Item, ServerOptions, FilterOption,
   HeaderItemClassNameFunction, BodyItemClassNameFunction, BodyRowClassNameFunction,
   TextDirection,
+  ItemExpandedKeyFunction,
 } from './types/main';
 import type { ClickEventType } from './types/internal';
 
@@ -198,5 +199,9 @@ export default {
   itemsExpanded: {
     type: Array as PropType<Item[]> | null,
     default: null,
+  },
+  itemsExpandedKey: {
+    type: [Function as PropType<ItemExpandedKeyFunction>, String],
+    default: undefined,
   },
 };

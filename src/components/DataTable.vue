@@ -370,6 +370,7 @@ const {
   rowsOfPageSeparatorMessage,
   showIndexSymbol,
   itemsExpanded,
+  itemsExpandedKey,
 } = toRefs(props);
 
 // style related computed variables
@@ -538,6 +539,7 @@ const {
   prevPageEndIndex,
   emits,
   itemsExpanded,
+  itemsExpandedKey,
 );
 
 const {
