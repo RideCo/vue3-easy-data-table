@@ -28,10 +28,11 @@
       @update-sort="updateSort"
       @select-all="selectAll"
       v-model:items-expanded="itemsExpanded"
+      items-expanded-key="player"
     >
       <template #expand="item">
         <div style="padding: 15px">
-          {{ item.player }} won championships
+          {{ item.name }} won championships
         </div>
       </template>
       <template #address="{ address }">
@@ -87,7 +88,11 @@
     </div> -->
   </div>
   <div>{{serverOptions}}</div>
-  <div>{{itemsExpanded}}</div>
+  <ul>
+    <li v-for="(expandedPlayer, index) in itemsExpanded">
+      <button @click="itemsExpanded.splice(index, 1)">Collapse {{ expandedPlayer.player }}</button>
+    </li>
+  </ul>
 </template>
 
 
@@ -157,6 +162,7 @@ export default defineComponent({
       ];
       serverItemsLength.value = serverTotalItemsLength;
       loading.value = false;
+      itemsExpanded.value.push(items.value[0])
     };
 
     // first load when created
