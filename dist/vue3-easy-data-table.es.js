@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { defineComponent, useCssVars, unref, computed, inject, openBlock, createElementBlock, withModifiers, createElementVNode, normalizeClass, pushScopeId, popScopeId, ref, watch, onMounted, onBeforeUnmount, toDisplayString, Fragment, renderList, useSlots, renderSlot, createCommentVNode, watchEffect, toRefs, provide, normalizeStyle, createBlock, normalizeProps, mergeProps, guardReactiveProps, createTextVNode, createVNode, isRef, createSlots, withCtx } from "vue";
+import { defineComponent, useCssVars, unref, computed, inject, openBlock, createElementBlock, withModifiers, createElementVNode, normalizeClass, pushScopeId, popScopeId, ref, watch, onMounted, onBeforeUnmount, toDisplayString, Fragment, renderList, useSlots, renderSlot, createCommentVNode, toRefs, provide, normalizeStyle, createBlock, normalizeProps, mergeProps, guardReactiveProps, createTextVNode, createVNode, isRef, createSlots, withCtx } from "vue";
 var MultipleSelectCheckBox_vue_vue_type_style_index_0_scoped_true_lang = "";
 var _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
@@ -431,74 +431,22 @@ function useClickRow(clickEventType, isMultipleSelectable, showIndex, emits) {
     clickRow
   };
 }
-function getItemValue(column, item) {
-  var _a;
-  if (column.includes(".")) {
-    const keys = column.split(".");
-    const { length } = keys;
-    let content;
-    let i = 0;
-    while (i < length) {
-      if (i === 0) {
-        content = item[keys[0]];
-      } else if (content && typeof content === "object") {
-        content = content[keys[i]];
-      } else {
-        content = "";
-        break;
-      }
-      i += 1;
-    }
-    return content != null ? content : "";
-  }
-  return (_a = item[column]) != null ? _a : "";
-}
-function generateColumnContent(column, item) {
-  const content = getItemValue(column, item);
-  return Array.isArray(content) ? content.join(",") : content;
-}
-function useExpandableRow(items, prevPageEndIndex, emits, itemsExpanded, itemsExpandedKey) {
+function useExpandableRow(items, prevPageEndIndex, emits) {
   const expandingItemIndexList = ref([]);
   const updateExpandingItemIndexList = (expandingItemIndex, expandingItem, event) => {
     event.stopPropagation();
     const index = expandingItemIndexList.value.indexOf(expandingItemIndex);
     if (index !== -1) {
       expandingItemIndexList.value.splice(index, 1);
-      emitItemsExpanded();
     } else {
-      const currentPageExpandIndex = getItemIndex(expandingItem);
+      const currentPageExpandIndex = items.value.findIndex((item) => JSON.stringify(item) === JSON.stringify(expandingItem));
       emits("expandRow", prevPageEndIndex.value + currentPageExpandIndex, expandingItem);
       expandingItemIndexList.value.push(prevPageEndIndex.value + currentPageExpandIndex);
-      emitItemsExpanded();
     }
   };
   const clearExpandingItemIndexList = () => {
     expandingItemIndexList.value = [];
   };
-  watchEffect(() => {
-    const indexList = itemsExpanded.value.reduce((itemsExpandedIndex, expandedItem) => {
-      const index = getItemIndex(expandedItem);
-      if (index !== -1) {
-        itemsExpandedIndex.push(index);
-      }
-      return itemsExpandedIndex;
-    }, []);
-    expandingItemIndexList.value = indexList;
-  });
-  function emitItemsExpanded() {
-    emits("update:itemsExpanded", expandingItemIndexList.value.map((index) => items.value[index]));
-  }
-  function getItemIndex(expandingItem) {
-    const expandedKey = itemsExpandedKey.value;
-    let comparatorFunction = (item) => JSON.stringify(item) === JSON.stringify(expandingItem);
-    if (expandedKey && typeof expandedKey === "function") {
-      comparatorFunction = (item) => expandedKey(item) === expandedKey(expandingItem);
-    }
-    if (expandedKey && typeof expandedKey === "string") {
-      comparatorFunction = (item) => getItemValue(expandedKey, item) === getItemValue(expandedKey, expandingItem);
-    }
-    return items.value.findIndex(comparatorFunction);
-  }
   return {
     expandingItemIndexList,
     updateExpandingItemIndexList,
@@ -903,6 +851,27 @@ function useServerOptions(serverOptions, multiSort, emits) {
     updateServerOptionsRowsPerPage
   };
 }
+function getItemValue(column, item) {
+  var _a;
+  if (column.includes(".")) {
+    let content = "";
+    const keys = column.split(".");
+    const { length } = keys;
+    let i = 0;
+    while (i < length) {
+      content = i === 0 ? item[keys[i]] : content[keys[i]];
+      i += 1;
+      if (content === void 0)
+        break;
+    }
+    return content;
+  }
+  return (_a = item[column]) != null ? _a : "";
+}
+function generateColumnContent(column, item) {
+  const content = getItemValue(column, item);
+  return Array.isArray(content) ? content.join(",") : content;
+}
 function useTotalItems(clientSortOptions, filterOptions, isServerSideMode, items, itemsSelected, searchField, searchValue, serverItemsLength, multiSort, emits) {
   const generateSearchingTarget = (item) => {
     if (typeof searchField.value === "string" && searchField.value !== "")
@@ -1231,19 +1200,11 @@ var propsWithDefault = {
   showIndexSymbol: {
     type: String,
     default: "#"
-  },
-  itemsExpanded: {
-    type: Array,
-    default: null
-  },
-  itemsExpandedKey: {
-    type: [Function, String],
-    default: void 0
   }
 };
 var DataTable_vue_vue_type_style_index_0_lang = "";
 var DataTable_vue_vue_type_style_index_1_scoped_true_lang = "";
-const _withScopeId = (n) => (pushScopeId("data-v-64101ce6"), n = n(), popScopeId(), n);
+const _withScopeId = (n) => (pushScopeId("data-v-19cc4b1b"), n = n(), popScopeId(), n);
 const _hoisted_1 = ["id"];
 const _hoisted_2 = ["onClick"];
 const _hoisted_3 = {
@@ -1300,14 +1261,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     "update:serverOptions",
     "updatePageItems",
     "updateTotalItems",
-    "selectAll",
-    "update:itemsExpanded"
+    "selectAll"
   ],
   setup(__props, { expose, emit: emits }) {
     const props = __props;
     useCssVars((_ctx) => ({
-      "dc5ad72e": unref(tableMinHeightPx),
-      "15b9b827": unref(tableHeightPx)
+      "8bb50160": unref(tableMinHeightPx),
+      "53360ea0": unref(tableHeightPx)
     }));
     const {
       tableNodeId,
@@ -1342,9 +1302,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       tableMinHeight,
       themeColor,
       rowsOfPageSeparatorMessage,
-      showIndexSymbol,
-      itemsExpanded,
-      itemsExpandedKey
+      showIndexSymbol
     } = toRefs(props);
     const tableHeightPx = computed(() => tableHeight.value ? `${tableHeight.value}px` : null);
     const tableMinHeightPx = computed(() => `${tableMinHeight.value}px`);
@@ -1416,7 +1374,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       expandingItemIndexList,
       updateExpandingItemIndexList,
       clearExpandingItemIndexList
-    } = useExpandableRow(pageItems, prevPageEndIndex, emits, itemsExpanded, itemsExpandedKey);
+    } = useExpandableRow(pageItems, prevPageEndIndex, emits);
     const {
       fixedHeaders,
       lastFixedColumn,
@@ -1694,7 +1652,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     };
   }
 });
-var DataTable = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-64101ce6"]]);
+var DataTable = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-19cc4b1b"]]);
 if (typeof window !== "undefined" && window.Vue) {
   window.Vue.createApp({}).component("Vue3EasyDataTable", DataTable);
 }
