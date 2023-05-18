@@ -56,3 +56,6 @@ export type BodyRowClassNameFunction = (item: Item, rowNumber: number) => string
 export type BodyItemClassNameFunction = (column: string, rowNumber: number) => string
 
 export type TextDirection = 'center' | 'left' | 'right'
+
+export type ItemExpandedKeyFunction = (item: Item) => string | number
+export type ItemExpandedKey = ItemExpandedKeyFunction | string
