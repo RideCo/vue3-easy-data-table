@@ -27,6 +27,8 @@
       multi-sort
       @update-sort="updateSort"
       @select-all="selectAll"
+      v-model:items-expanded="itemsExpanded"
+      items-expanded-key="player"
     >
       <template #expand="item">
         <div style="padding: 15px">
@@ -86,6 +88,11 @@
     </div> -->
   </div>
   <div>{{serverOptions}}</div>
+  <ul>
+    <li v-for="(expandedPlayer, index) in itemsExpanded">
+      <button @click="itemsExpanded.splice(index, 1)">Collapse {{ expandedPlayer.player }}</button>
+    </li>
+  </ul>
 </template>
 
 
@@ -125,6 +132,7 @@ export default defineComponent({
     ];
     const items = ref<Item[]>([]);
     const itemsSelected = ref<Item[]>([items.value[0]]);
+    const itemsExpanded = ref<Item[]>([]);
     const serverItemsLength = ref(0);
     const serverOptions = ref<ServerOptions>({
       page: 1,
@@ -154,6 +162,7 @@ export default defineComponent({
       ];
       serverItemsLength.value = serverTotalItemsLength;
       loading.value = false;
+      itemsExpanded.value.push(items.value[0])
     };
 
     // first load when created
@@ -221,6 +230,7 @@ export default defineComponent({
       bodyRowClassName,
       updateSort,
       selectAll,
+      itemsExpanded,
     };
   },
 
