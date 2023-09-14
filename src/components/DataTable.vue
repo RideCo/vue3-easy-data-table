@@ -366,7 +366,6 @@ const {
   sortType,
   tableHeight,
   tableMinHeight,
-  themeColor,
   rowsOfPageSeparatorMessage,
   showIndexSymbol,
   itemsExpanded,
@@ -377,9 +376,6 @@ const {
 // style related computed variables
 const tableHeightPx = computed(() => (tableHeight.value ? `${tableHeight.value}px` : null));
 const tableMinHeightPx = computed(() => `${tableMinHeight.value}px`);
-
-// global style related variable
-provide('themeColor', themeColor.value);
 
 // slot
 const slots = useSlots();

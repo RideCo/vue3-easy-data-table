@@ -94,7 +94,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('click', closeRowsSelector);
 });
 
-const themeColor = inject('themeColor');
 </script>
 
 <style scoped lang="scss">
@@ -148,7 +147,7 @@ const themeColor = inject('themeColor');
 
       &.selected {
         color: #fff;
-        background-color: v-bind(themeColor);
+        background-color: var(--easy-table-theme-color);
       }
     }
   }
