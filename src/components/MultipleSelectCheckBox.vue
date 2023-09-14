@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed, inject } from 'vue';
+import { PropType, computed } from 'vue';
 
 const emits = defineEmits(['change']);
 
@@ -27,19 +27,17 @@ const toggleChecked = () => {
   emits('change', !isChecked.value);
 };
 
-const themeColor = inject('themeColor');
 </script>
 
 <style lang="scss" scoped>
 @import '../scss/checbox.scss';
 
-$checkbox-checked-color: v-bind(themeColor);
 
 .easy-checkbox {
   input[type="checkbox"] {
     &.allSelected, &.partSelected {
       + label:before{
-        background: $checkbox-checked-color;
+        background: var(--easy-table-theme-color);
       }
     }
   }

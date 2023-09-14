@@ -2,12 +2,6 @@
   <div class="loader-line"></div>
 </template>
 
-<script lang="ts" setup>
-import { inject } from 'vue';
-
-const themeColor = inject('themeColor');
-</script>
-
 <style lang="scss" scoped>
 .loader-line {
   width: 100%;
@@ -24,7 +18,7 @@ const themeColor = inject('themeColor');
   left: -50%;
   height: 3px;
   width: 40%;
-  background-color: v-bind(themeColor);
+  background-color: var(--easy-table-theme-color);
   -webkit-animation: lineAnim 1s linear infinite;
   -moz-animation: lineAnim 1s linear infinite;
   animation: lineAnim 1s linear infinite;
