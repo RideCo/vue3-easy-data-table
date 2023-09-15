@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, inject } from 'vue';
+import { computed } from 'vue';
 
 const emits = defineEmits(['updatePage']);
 
@@ -161,7 +161,6 @@ const paginationItemsForRender = computed((): PaginationItem[] => {
   return paginationItems;
 });
 
-const themeColor = inject('themeColor');
 </script>
 <style lang="scss" scoped>
 .buttons-pagination {
@@ -190,9 +189,9 @@ const themeColor = inject('themeColor');
     }
     &.button {
       &.active {
-        background-color: v-bind(themeColor);
+        background-color: var(--easy-table-theme-color);
         border-left: var(--easy-table-buttons-pagination-border);
-        border-color: v-bind(themeColor)!important;
+        border-color: var(--easy-table-theme-color)!important;
         color: #fff;
       }
       &.active-prev {

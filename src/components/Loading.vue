@@ -4,11 +4,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { inject } from 'vue';
-
-const themeColor = inject('themeColor');
-</script>
 
 <style lang="scss" scoped>
 .lds-ring {
@@ -27,7 +22,7 @@ const themeColor = inject('themeColor');
   border: 8px solid #fff;
   border-radius: 50%;
   animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-  border-color: v-bind(themeColor) transparent transparent transparent;
+  border-color: var(--easy-table-theme-color) transparent transparent transparent;
 }
 .lds-ring div:nth-child(1) {
   animation-delay: -0.45s;

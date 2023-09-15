@@ -136,10 +136,6 @@ export default {
     type: Number,
     default: null,
   },
-  themeColor: {
-    type: String,
-    default: '#42b883',
-  },
   tableClassName: {
     type: String,
     default: '',
