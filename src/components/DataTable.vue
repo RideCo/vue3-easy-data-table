@@ -411,6 +411,7 @@ const emits = defineEmits([
   'updateTotalItems',
   'selectAll',
   'update:itemsExpanded',
+  'update:currentPage'
 ]);
 
 const isMultipleSelectable = computed((): boolean => itemsSelected.value !== null);
@@ -504,6 +505,7 @@ const {
   rowsPerPageRef,
   serverOptions,
   updateServerOptionsPage,
+  emits
 );
 
 const {
