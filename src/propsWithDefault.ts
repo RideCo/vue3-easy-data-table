@@ -4,6 +4,7 @@ import type {
   HeaderItemClassNameFunction, BodyItemClassNameFunction, BodyRowClassNameFunction,
   TextDirection,
   ItemKeyFn,
+  SortFunction,
 } from './types/main';
 import type { ClickEventType } from './types/internal';
 
@@ -127,6 +128,10 @@ export default {
   multiSort: {
     type: Boolean,
     default: false,
+  },
+  sortFunction: {
+    type: Function as PropType<SortFunction> | null,
+    default: null
   },
   tableMinHeight: {
     type: Number,
