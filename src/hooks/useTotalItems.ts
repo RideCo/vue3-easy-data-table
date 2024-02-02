@@ -1,7 +1,7 @@
 import {
   Ref, computed, ComputedRef, watch,
 } from 'vue';
-import type { Item, FilterOption, ItemKey } from '../types/main';
+import type { Item, FilterOption, ItemKey, SortFunction } from '../types/main';
 import type { ClientSortOptions, EmitsEventName } from '../types/internal';
 import { areItemsEqual, getItemValue } from '../utils';
 
@@ -16,7 +16,8 @@ export default function useTotalItems(
   serverItemsLength: Ref<number>,
   multiSort: Ref<boolean>,
   emits: (event: EmitsEventName, ...args: any[]) => void,
-  itemsKey: Ref<ItemKey>
+  itemsKey: Ref<ItemKey>,
+  sortFn: Ref<SortFunction | null>,
 ) {
   const generateSearchingTarget = (item: Item): string => {
     if (typeof searchField.value === 'string' && searchField.value !== '') return getItemValue(searchField.value, item);
@@ -117,12 +118,14 @@ export default function useTotalItems(
       if (sortBy.length === 0) return itemsFilteringSorted;
       return recursionMuiltSort(sortBy, sortDesc, itemsFilteringSorted, sortBy.length - 1);
     }
-    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-    return itemsFilteringSorted.sort((a, b) => {
+
+    const defaultSortFn = (a: Item, b: Item): -1 | 0 | 1 => {
       if (getItemValue(sortBy as string, a) < getItemValue(sortBy as string, b)) return sortDesc ? 1 : -1;
       if (getItemValue(sortBy as string, a) > getItemValue(sortBy as string, b)) return sortDesc ? -1 : 1;
       return 0;
-    });
+    }
+
+    return itemsFilteringSorted.sort((a, b) => sortFn.value?.(a, b, sortBy as string, sortDesc as boolean, getItemValue, defaultSortFn) ?? defaultSortFn(a, b));
   });
 
   // eslint-disable-next-line max-len
