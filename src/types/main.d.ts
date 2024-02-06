@@ -1,3 +1,4 @@
+import { getItemValue as getItemValueFn } from '../utils'
 export type SortType = 'asc' | 'desc'
 
 export type FilterComparison = '=' | '!=' | '>' | '>=' | '<' | '<=' | 'between' | 'in';
@@ -59,3 +60,11 @@ export type TextDirection = 'center' | 'left' | 'right'
 
 export type ItemKeyFn = (item: Item) => string | number
 export type ItemKey = ItemKeyFn | string | undefined
+
+export type SortFunction = (
+  a: Item, 
+  b: Item, 
+  sortBy: string, 
+  sortDesc: boolean, 
+  getItemValue: typeof getItemValueFn, 
+  defaultSortFunction: (a: Item, b: Item) => number) => number;
