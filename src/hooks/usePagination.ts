@@ -1,7 +1,8 @@
 import {
-  ref, Ref, computed, ComputedRef,
+  ref, Ref, computed, ComputedRef, watch,
 } from 'vue';
 import type { ServerOptions } from '../types/main';
+import type { EmitsEventName } from '../types/internal';
 
 export default function usePagination(
   currentPage: Ref<number>,
@@ -11,8 +12,18 @@ export default function usePagination(
   rowsPerPage: Ref<number>,
   serverOptions: Ref<ServerOptions | null>,
   updateServerOptionsPage: (page: number) => void,
+  emits: (event: EmitsEventName, ...args: any[]) => void,
 ) {
-  const currentPaginationNumber = ref(serverOptions.value ? serverOptions.value.page : currentPage.value);
+
+  function getCurrentPaginationNumber() {
+    return serverOptions.value ? serverOptions.value.page : currentPage.value
+  }
+  const currentPaginationNumber = ref(getCurrentPaginationNumber());
+  watch(currentPage, () => {
+    currentPaginationNumber.value = getCurrentPaginationNumber()
+  })
+  watch(currentPaginationNumber, (value) =>  emits('update:currentPage', value))
+  
   const maxPaginationNumber = computed((): number => Math.ceil(totalItemsLength.value / rowsPerPage.value));
   // eslint-disable-next-line max-len
   const isLastPage = computed((): boolean => maxPaginationNumber.value === 0 || (currentPaginationNumber.value === maxPaginationNumber.value));
