@@ -126,13 +126,13 @@ export default function useTotalItems(
     }
 
     return itemsFilteringSorted.sort(
-      (a, b) => 
+      (a, b) =>
         sortFn.value?.(
-          a, 
-          b, 
-          sortBy as string, 
-          sortDesc as boolean, 
-          getItemValue, 
+          a,
+          b,
+          sortBy as string,
+          sortDesc as boolean,
+          getItemValue,
           defaultSortFn
         ) ?? defaultSortFn(a, b)
     );
