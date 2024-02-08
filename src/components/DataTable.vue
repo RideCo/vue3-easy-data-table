@@ -370,7 +370,8 @@ const {
   showIndexSymbol,
   itemsExpanded,
   itemsKey,
-  preventContextMenuRow
+  preventContextMenuRow,
+  sortFunction,
 } = toRefs(props);
 
 // style related computed variables
@@ -486,6 +487,7 @@ const {
   multiSort,
   emits,
   itemsKey,
+  sortFunction,
 );
 
 const {
